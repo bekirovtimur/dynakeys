@@ -1,0 +1,8 @@
+{
+  "routes": [
+    { "src": "/connect", "dest": "/api/outline" },
+    { "src": "/outline", "dest": "/api/outline" },
+    { "src": "/vless", "dest": "/api/vless" },
+    { "src": "/trojan", "dest": "/api/trojan" }
+  ]
+}
