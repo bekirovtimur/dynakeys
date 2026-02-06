@@ -1,6 +1,6 @@
 const V2RAY_URL = process.env.V2RAY_URL;
 
-const PROFILE_NAME = "DynaKeys🔹";
+const PROFILE_NAME = "🔐DynaKeys🔹";
 
 export default async function handler(req, res) {
   try {
