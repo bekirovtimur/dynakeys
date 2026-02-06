@@ -3,34 +3,10 @@ const V2RAY_URL = process.env.V2RAY_URL;
 const PROFILE_NAME = "DynaKeys🔹";
 const PROTOCOL = "trojan";
 
-// Функция для генерации заголовка профиля
-function generateProfileHeader(country) {
-  // Формируем название профиля
-  let profileTitle = PROFILE_NAME + PROTOCOL;
-  
-  // Добавляем флаг страны, если указан
-  if (country) {
-    profileTitle += "🔹" + country;
-  }
-  
-  // Кодируем в base64
-  const base64Title = Buffer.from(profileTitle, "utf-8").toString("base64");
-  
-  return `//profile-title: base64:${base64Title}
-//profile-update-interval: 1
-//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531
-//support-url: https://github.com/bekirovtimur/dynakeys/issues 
-//profile-web-page-url: https://dynakeys.vercel.app
-`;
-}
-
 export default async function handler(req, res) {
   try {
     // Получаем параметр country из query string
     const { country } = req.query;
-
-    // Генерируем заголовок профиля
-    const profileHeader = generateProfileHeader(country);
 
     // Загружаем исходный список прокси
     const response = await fetch(V2RAY_URL);
@@ -44,6 +20,7 @@ export default async function handler(req, res) {
 
     // Парсим все найденные строки
     const results = [];
+    let firstCountryFlag = null;
     
     for (const line of trojanLines) {
       const parseResult = parseTrojanLine(line);
@@ -61,11 +38,19 @@ export default async function handler(req, res) {
           continue;
         }
         
+        // Сохраняем флаг первой подходящей конфигурации
+        if (!firstCountryFlag) {
+          firstCountryFlag = countryFlag;
+        }
+        
         // Формируем результат в формате: CONFIG#CountryFlag ISP
         const formatted = `${config}#${countryFlag} ${isp}`;
         results.push(formatted);
       }
     }
+
+    // Генерируем заголовок профиля с флагом из первой конфигурации
+    const profileHeader = generateProfileHeader(firstCountryFlag);
 
     // Формируем полный ответ с заголовком
     const fullResponse = profileHeader + results.join('\n');
@@ -75,12 +60,32 @@ export default async function handler(req, res) {
     res.status(200).send(fullResponse);
 
   } catch (err) {
-    // При ошибке возвращаем заголовок с текущим country (если был)
-    const { country } = req.query;
-    const profileHeader = generateProfileHeader(country);
+    // При ошибке возвращаем заголовок без флага
+    const profileHeader = generateProfileHeader(null);
     res.setHeader("Content-Type", "text/plain");
     res.status(200).send(profileHeader);
   }
+}
+
+// Функция для генерации заголовка профиля
+function generateProfileHeader(countryFlag) {
+  // Формируем название профиля
+  let profileTitle = PROFILE_NAME + PROTOCOL;
+  
+  // Добавляем флаг страны, если указан
+  if (countryFlag) {
+    profileTitle += "🔹" + countryFlag;
+  }
+  
+  // Кодируем в base64
+  const base64Title = Buffer.from(profileTitle, "utf-8").toString("base64");
+  
+  return `//profile-title: base64:${base64Title}
+//profile-update-interval: 1
+//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531
+//support-url: https://github.com/bekirovtimur/dynakeys/issues 
+//profile-web-page-url: https://dynakeys.vercel.app
+`;
 }
 
 function parseTrojanLine(line) {
