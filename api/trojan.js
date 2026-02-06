@@ -49,8 +49,8 @@ export default async function handler(req, res) {
       }
     }
 
-    // Генерируем заголовок профиля с флагом из первой конфигурации
-    const profileHeader = generateProfileHeader(firstCountryFlag);
+    // Генерируем заголовок профиля с флагом только если указан country
+    const profileHeader = generateProfileHeader(country ? firstCountryFlag : null);
 
     // Формируем полный ответ с заголовком
     const fullResponse = profileHeader + results.join('\n');
