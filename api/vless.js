@@ -16,8 +16,7 @@ function generateProfileHeader(country) {
   // Кодируем в base64
   const base64Title = Buffer.from(profileTitle, "utf-8").toString("base64");
   
-  return `//profile-title: DynaKeys
-//profile-title: base64:${base64Title}
+  return `//profile-title: base64:${base64Title}
 //profile-update-interval: 1
 //subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531
 //support-url: https://github.com/bekirovtimur/dynakeys/issues 
