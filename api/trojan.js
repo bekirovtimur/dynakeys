@@ -2,6 +2,9 @@ const V2RAY_URL = process.env.V2RAY_URL;
 
 export default async function handler(req, res) {
   try {
+    // Получаем параметр country из query string
+    const { country } = req.query;
+
     // Загружаем исходный список прокси
     const response = await fetch(V2RAY_URL);
     const text = await response.text();
@@ -23,7 +26,18 @@ export default async function handler(req, res) {
       const parseResult = parseTrojanLine(line);
       
       if (parseResult) {
-        const { countryFlag, config, isp } = parseResult;
+        const { countryFlag, config, isp, countryCode } = parseResult;
+        
+        // Пропускаем записи без кода страны (флаг 🏳)
+        if (!countryCode) {
+          continue;
+        }
+        
+        // Если указан фильтр по стране, проверяем совпадение
+        if (country && countryCode !== country) {
+          continue;
+        }
+        
         // Формируем результат в формате: CONFIG#CountryFlag ISP
         const formatted = `${config}#${countryFlag} ${isp}`;
         results.push(formatted);
@@ -31,6 +45,9 @@ export default async function handler(req, res) {
     }
 
     if (!results.length) {
+      if (country) {
+        return res.status(404).json({ error: `No trojan entries found for country: ${country}` });
+      }
       return res.status(500).json({ error: "Failed to parse any trojan lines" });
     }
 
@@ -52,6 +69,11 @@ function parseTrojanLine(line) {
     }
     const countryFlag = parts[0];
 
+    // Пропускаем записи с флагом 🏳 (без страны)
+    if (countryFlag === '🏳') {
+      return null;
+    }
+
     // Извлекаем trojan конфиг (от trojan:// до символа #)
     const trojanMatch = line.match(/(trojan:\/\/[^#]+)/);
     if (!trojanMatch) {
@@ -66,10 +88,16 @@ function parseTrojanLine(line) {
     }
     const isp = ispMatch[1];
 
+    // Извлекаем код страны (формат: ... 102ms DE [ISP])
+    // Код страны находится между временем отклика и [ISP]
+    const countryCodeMatch = line.match(/\d+ms\s+([A-Z]{2})\s+\[/);
+    const countryCode = countryCodeMatch ? countryCodeMatch[1] : null;
+
     return {
       countryFlag,
       config,
-      isp
+      isp,
+      countryCode
     };
   } catch (error) {
     console.error("Error parsing trojan line:", error);
