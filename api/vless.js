@@ -15,10 +15,6 @@ export default async function handler(req, res) {
       .map((l) => l.trim())
       .filter((l) => l.includes("vless://"));
 
-    if (!vlessLines.length) {
-      return res.status(500).json({ error: "No vless:// entries found" });
-    }
-
     // Парсим все найденные строки
     const results = [];
     
@@ -44,19 +40,13 @@ export default async function handler(req, res) {
       }
     }
 
-    if (!results.length) {
-      if (country) {
-        return res.status(404).json({ error: `No vless entries found for country: ${country}` });
-      }
-      return res.status(500).json({ error: "Failed to parse any vless lines" });
-    }
-
     // Отправляем все результаты, разделенные переносом строки
     res.setHeader("Content-Type", "text/plain");
     res.status(200).send(results.join('\n'));
 
   } catch (err) {
-    res.status(500).json({ error: "Internal error", details: err.message });
+    res.setHeader("Content-Type", "text/plain");
+    res.status(200).send("");
   }
 }
 
