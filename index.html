@@ -20,23 +20,23 @@
             align-items: center;
             color: #333;
             overflow-x: hidden;
+            padding: 2rem 1rem;
         }
 
         .container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 2rem;
+            padding: 2.5rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 90%;
-            margin: 2rem;
+            max-width: 700px;
+            width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .header h1 {
@@ -56,97 +56,133 @@
             opacity: 0.8;
         }
 
-        .endpoints-grid {
-            display: grid;
-            gap: 1.5rem;
+        .filters-section {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 1.5rem;
             margin-bottom: 2rem;
+            border: 1px solid #e9ecef;
         }
 
-        .endpoint-card {
+        .filters-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .filter-select {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .filter-select:hover {
+            border-color: #667eea;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .generate-button:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
             background: #fff;
             border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border: 1px solid #f0f0f0;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid #e9ecef;
+            margin-bottom: 2rem;
+            display: none;
         }
 
-        .endpoint-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+        .result-section.show {
+            display: block;
         }
 
-        .endpoint-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .endpoint-header {
+        .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
 
-        .endpoint-title {
-            font-size: 1.3rem;
+        .result-title {
+            font-size: 1.1rem;
             font-weight: 600;
             color: #333;
-        }
-
-        .protocol-badge {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .endpoint-description {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-        }
-
-        .url-display {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 0.8rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #495057;
-            margin-bottom: 1rem;
-            word-break: break-all;
-            user-select: all;
         }
 
         .copy-button {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            width: 100%;
-            justify-content: center;
         }
 
         .copy-button:hover {
@@ -154,25 +190,62 @@
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .copy-button:active {
-            transform: translateY(0);
-        }
-
         .copy-button.copied {
             background: #28a745;
         }
 
-        .copy-icon {
-            width: 16px;
-            height: 16px;
+        .url-display {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #495057;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
-        .footer {
-            text-align: center;
+        .info-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .info-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-content {
             color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .info-content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
             font-size: 0.9rem;
-            opacity: 0.7;
-            margin-top: 1.5rem;
+            color: #e83e8c;
+        }
+
+        .info-content ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .info-content li {
+            margin: 0.3rem 0;
         }
 
         .notification {
@@ -193,9 +266,16 @@
             transform: translateX(0);
         }
 
-        @media (max-width: 768px) {
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
             .container {
-                margin: 1rem;
                 padding: 1.5rem;
             }
 
@@ -203,28 +283,19 @@
                 font-size: 2rem;
             }
 
-            .header p {
-                font-size: 1rem;
+            .filters-grid {
+                grid-template-columns: 1fr;
             }
 
-            .endpoint-header {
+            .result-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.5rem;
             }
 
-            .protocol-badge {
-                align-self: flex-start;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.7rem;
-            }
-            
-            .endpoint-card {
-                padding: 1.2rem;
+            .copy-button {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -236,64 +307,72 @@
             <p>Сервис динамических ключей</p>
         </div>
 
-        <div class="endpoints-grid">
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <div class="endpoint-title">Outline</div>
-                    <div class="protocol-badge">Shadowsocks</div>
-                </div>
-                <div class="endpoint-description">
-                    Получить конфигурацию Shadowsocks для Outline клиента. Возвращает случайную конфигурацию.
-                </div>
-                <div class="url-display" id="url-outline">
-                    {DOMAIN}/outline
-                </div>
-                <button class="copy-button" onclick="copyToClipboard('outline', this)">
-                    <svg class="copy-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                    Копировать
-                </button>
+        <div class="filters-section">
+            <div class="filters-title">
+                <span>⚙️</span> Настройка подписки
             </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <div class="endpoint-title">VLESS</div>
-                    <div class="protocol-badge">VLESS</div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Протокол</label>
+                    <select class="filter-select" id="protocol-select">
+                        <option value="">Все</option>
+                        <option value="vless">VLESS</option>
+                        <option value="trojan">Trojan</option>
+                    </select>
                 </div>
-                <div class="endpoint-description">
-                    Получить список VLESS ключей с информацией о локации и провайдере. Возвращает в текстовом формате.
+                <div class="filter-group">
+                    <label class="filter-label">Страна</label>
+                    <select class="filter-select" id="country-select">
+                        <option value="">Все</option>
+                        <option value="RU">Россия 🇷🇺</option>
+                        <option value="DE">Германия 🇩🇪</option>
+                        <option value="FI">Финляндия 🇫🇮</option>
+                        <option value="US">США 🇺🇸</option>
+                        <option value="NL">Нидерланды 🇳🇱</option>
+                        <option value="FR">Франция 🇫🇷</option>
+                    </select>
                 </div>
-                <div class="url-display" id="url-vless">
-                    {DOMAIN}/vless
-                </div>
-                <button class="copy-button" onclick="copyToClipboard('vless', this)">
-                    <svg class="copy-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                    Копировать
-                </button>
             </div>
-
-            <div class="endpoint-card">
-                <div class="endpoint-header">
-                    <div class="endpoint-title">Trojan</div>
-                    <div class="protocol-badge">Trojan</div>
-                </div>
-                <div class="endpoint-description">
-                    Получить список Trojan ключей с информацией о локации и провайдере. Возвращает в текстовом формате.
-                </div>
-                <div class="url-display" id="url-trojan">
-                    {DOMAIN}/trojan
-                </div>
-                <button class="copy-button" onclick="copyToClipboard('trojan', this)">
-                    <svg class="copy-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                    Копировать
-                </button>
-            </div>
+            <button class="generate-button" onclick="generateUrl()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                Сгенерировать ссылку
+            </button>
         </div>
+
+        <div class="result-section" id="result-section">
+            <div class="result-header">
+                <div class="result-title">📋 Результат</div>
+                <button class="copy-button" onclick="copyResult()" id="copy-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                    Копировать
+                </button>
+            </div>
+            <div class="url-display" id="url-display"></div>
+        </div>
+
+        <!-- <div class="info-section">
+            <div class="info-title">
+                <span>ℹ️</span> Использование фильтров
+            </div>
+            <div class="info-content">
+                <p>Вы можете использовать фильтры напрямую в URL:</p>
+                <ul>
+                    <li><code>proto</code> — протокол: <code>vless</code>, <code>trojan</code></li>
+                    <li><code>country</code> — код страны: <code>RU</code>, <code>DE</code>, <code>FI</code>, <code>US</code>, <code>NL</code>, <code>FR</code></li>
+                </ul>
+                <p style="margin-top: 0.5rem;"><strong>Примеры:</strong></p>
+                <ul>
+                    <li><code>/subscribe?proto=vless&country=RU</code> — VLESS из России</li>
+                    <li><code>/subscribe?proto=trojan</code> — все Trojan</li>
+                    <li><code>/subscribe?country=DE</code> — все протоколы из Германии</li>
+                    <li><code>/subscribe</code> — все протоколы и страны</li>
+                </ul>
+            </div>
+        </div> -->
 
         <div class="footer">
             <p>🚀 Powered by Vercel • Сервис динамических ключей</p>
@@ -305,52 +384,73 @@
     </div>
 
     <script>
-        // Получаем домен текущей страницы
         const currentDomain = window.location.origin;
-        
-        // Заменяем плейсходеры на реальный домен
-        document.querySelectorAll('.url-display').forEach(element => {
-            element.textContent = element.textContent.replace('{DOMAIN}', currentDomain);
-        });
+        let currentUrl = '';
 
-        async function copyToClipboard(endpoint, button) {
-            const url = `${currentDomain}/${endpoint}`;
+        function generateUrl() {
+            const protocol = document.getElementById('protocol-select').value;
+            const country = document.getElementById('country-select').value;
+            
+            let url = `${currentDomain}/subscribe`;
+            const params = [];
+            
+            if (protocol) {
+                params.push(`proto=${protocol}`);
+            }
+            
+            if (country) {
+                params.push(`country=${country}`);
+            }
+            
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            
+            currentUrl = url;
+            
+            const resultSection = document.getElementById('result-section');
+            const urlDisplay = document.getElementById('url-display');
+            
+            resultSection.classList.add('show');
+            urlDisplay.textContent = url;
+        }
+
+        async function copyResult() {
+            if (!currentUrl) {
+                return;
+            }
             
             try {
-                await navigator.clipboard.writeText(url);
+                await navigator.clipboard.writeText(currentUrl);
                 showNotification();
                 
-                // Анимация для кнопки
-                const originalText = button.innerHTML;
-                button.classList.add('copied');
-                button.innerHTML = `
-                    <svg class="copy-icon" viewBox="0 0 24 24" fill="currentColor">
+                const copyButton = document.getElementById('copy-button');
+                const originalText = copyButton.innerHTML;
+                copyButton.classList.add('copied');
+                copyButton.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                     </svg>
                     Скопировано!
                 `;
                 
                 setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.innerHTML = originalText;
+                    copyButton.classList.remove('copied');
+                    copyButton.innerHTML = originalText;
                 }, 2000);
                 
             } catch (err) {
                 console.error('Ошибка при копировании:', err);
-                // Fallback для старых браузеров
-                fallbackCopyTextToClipboard(url);
+                fallbackCopyTextToClipboard(currentUrl);
             }
         }
 
         function fallbackCopyTextToClipboard(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
-            
-            // Избегаем скроллинга к элементу
             textArea.style.top = "0";
             textArea.style.left = "0";
             textArea.style.position = "fixed";
-
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
@@ -374,17 +474,17 @@
             }, 3000);
         }
 
-        // Добавляем анимации при загрузке страницы
+        // Анимации при загрузке страницы
         window.addEventListener('load', () => {
-            const cards = document.querySelectorAll('.endpoint-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
+            const sections = document.querySelectorAll('.filters-section, .info-section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
                 
                 setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
+                    section.style.transition = 'all 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
                 }, index * 150);
             });
         });
