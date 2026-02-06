@@ -63,7 +63,7 @@ export default async function handler(req, res) {
 
     // Генерируем заголовок профиля
     // Если указан country, добавляем флаг, иначе только DynaKeys🔹
-    const profileHeader = generateProfileHeader(country ? firstCountryFlag : null);
+    const profileHeader = generateProfileHeader(proto, country ? firstCountryFlag : null);
 
     // Формируем полный ответ с заголовком
     const fullResponse = profileHeader + results.join('\n');
@@ -74,16 +74,21 @@ export default async function handler(req, res) {
 
   } catch (err) {
     // При ошибке возвращаем заголовок без флага
-    const profileHeader = generateProfileHeader(null);
+    const profileHeader = generateProfileHeader(proto, null);
     res.setHeader("Content-Type", "text/plain");
     res.status(200).send(profileHeader);
   }
 }
 
 // Функция для генерации заголовка профиля
-function generateProfileHeader(countryFlag) {
+function generateProfileHeader(proto, countryFlag) {
   // Формируем название профиля
   let profileTitle = PROFILE_NAME;
+  
+  // Добавляем протокол, если указан
+  if (proto) {
+    profileTitle += proto + "🔹";
+  }
   
   // Добавляем флаг страны, если указан
   if (countryFlag) {
