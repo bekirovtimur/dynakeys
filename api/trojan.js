@@ -1,9 +1,37 @@
 const V2RAY_URL = process.env.V2RAY_URL;
 
+const PROFILE_NAME = "DynaKeys🔹";
+const PROTOCOL = "trojan";
+
+// Функция для генерации заголовка профиля
+function generateProfileHeader(country) {
+  // Формируем название профиля
+  let profileTitle = PROFILE_NAME + PROTOCOL;
+  
+  // Добавляем флаг страны, если указан
+  if (country) {
+    profileTitle += "🔹" + country;
+  }
+  
+  // Кодируем в base64
+  const base64Title = Buffer.from(profileTitle, "utf-8").toString("base64");
+  
+  return `//profile-title: DynaKeys
+//profile-title: base64:${base64Title}
+//profile-update-interval: 1
+//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531
+//support-url: https://github.com/bekirovtimur/dynakeys/issues 
+//profile-web-page-url: https://dynakeys.vercel.app
+`;
+}
+
 export default async function handler(req, res) {
   try {
     // Получаем параметр country из query string
     const { country } = req.query;
+
+    // Генерируем заголовок профиля
+    const profileHeader = generateProfileHeader(country);
 
     // Загружаем исходный список прокси
     const response = await fetch(V2RAY_URL);
@@ -40,13 +68,19 @@ export default async function handler(req, res) {
       }
     }
 
+    // Формируем полный ответ с заголовком
+    const fullResponse = profileHeader + results.join('\n');
+
     // Отправляем все результаты, разделенные переносом строки
     res.setHeader("Content-Type", "text/plain");
-    res.status(200).send(results.join('\n'));
+    res.status(200).send(fullResponse);
 
   } catch (err) {
+    // При ошибке возвращаем заголовок с текущим country (если был)
+    const { country } = req.query;
+    const profileHeader = generateProfileHeader(country);
     res.setHeader("Content-Type", "text/plain");
-    res.status(200).send("");
+    res.status(200).send(profileHeader);
   }
 }
 
